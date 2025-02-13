@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Hacking Simulator</title>
+    <title>Hacking Simulator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -23,6 +23,16 @@
             height: 200px;
             border: 1px solid #00ff00;
             overflow-y: auto;
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 18px;
+            color: black;
+            background-color: #ddd;
+            border: none;
+            margin-top: 10px;
         }
 
         button {
@@ -46,15 +56,17 @@
 <body>
 
     <h1>Fake Hacking Simulator</h1>
-    <p>Start typing to simulate the hacking process!</p>
+    <p>Type random words to simulate the hacking process!</p>
 
     <div class="terminal" id="terminal">
         <p id="terminalOutput">Initializing hack...</p>
     </div>
 
+    <input type="text" id="userInput" placeholder="Type random text..." />
+
     <script>
         let terminalOutput = document.getElementById("terminalOutput");
-        let typing = false;
+        let userInput = document.getElementById("userInput");
         let charCount = 0;
         const maxChars = 100;
 
@@ -70,36 +82,35 @@
             if (charCount >= maxChars) {
                 const result = Math.random() > 0.5 ? "Success! Hack completed." : "Failure! Hack failed.";
                 terminalOutput.innerText += `\n\n${result}`;
+                userInput.disabled = true; // Disable the input field after 100 characters
             }
         }
 
-        // Event listener for keypress
-        document.addEventListener("keydown", function(event) {
-            if (typing && charCount < maxChars) {
-                const randomChar = event.key; // Capture the key pressed
+        // Event listener for input
+        userInput.addEventListener("input", function() {
+            const typedText = userInput.value;
+            const lastChar = typedText.slice(-1);
 
-                if (randomChar !== "Shift" && randomChar !== "CapsLock" && randomChar !== "Enter") {
-                    charCount++;
-                    simulateHackingCode(randomChar); // Simulate typing the key in the terminal
-                }
+            // Only simulate the typing if it's a non-empty character
+            if (lastChar && charCount < maxChars) {
+                simulateHackingCode(lastChar); // Simulate typing the character in the terminal
+                charCount++;
                 showResult();
             }
         });
 
-        // Start the typing process when the user clicks the button
-        function startTyping() {
-            typing = true;
-            terminalOutput.innerText = "Initializing hack...\nReady to start typing...";
-            document.getElementById("terminal").style.border = "1px solid #00ff00";
-        }
-
         // Add a start button for the user to begin typing
         const startButton = document.createElement("button");
         startButton.innerText = "Start Typing";
-        startButton.addEventListener("click", startTyping);
+        startButton.addEventListener("click", function() {
+            terminalOutput.innerText = "Initializing hack...\nReady to start typing...";
+            userInput.disabled = false; // Enable the input field
+            userInput.focus(); // Focus on the input field for easier typing
+        });
         document.body.appendChild(startButton);
 
     </script>
 
 </body>
-</html>
+    </html>
+    

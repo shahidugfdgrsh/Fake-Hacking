@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Internet Hacking Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: white;
+            padding: 20px;
+        }
+
+        .terminal {
+            background-color: black;
+            color: lime;
+            font-family: monospace;
+            padding: 10px;
+            width: 90%;
+            margin: 20px auto;
+            height: 200px;
+            border: 1px solid #00ff00;
+            overflow-y: auto;
+        }
+
+        button {
+            background-color: #00ff00;
+            color: black;
+            font-size: 18px;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #00cc00;
+        }
+
+        h1 {
+            color: lime;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Fake Internet Hacking Simulator</h1>
+    <p>Press the button to simulate a hacking attempt!</p>
+
+    <button id="hackButton">Start Hacking</button>
+
+    <div class="terminal hidden" id="terminal">
+        <p id="terminalOutput">Initializing hack...</p>
+    </div>
+
+    <script>
+        document.getElementById("hackButton").addEventListener("click", function() {
+            // Show terminal and start typing simulation
+            let terminal = document.getElementById("terminal");
+            let terminalOutput = document.getElementById("terminalOutput");
+            terminal.classList.remove("hidden");
+            terminalOutput.innerText = "";
+
+            // Function to simulate typing
+            function simulateTyping(text, index) {
+                if (index < text.length) {
+                    terminalOutput.innerText += text.charAt(index);
+                    index++;
+                    setTimeout(() => simulateTyping(text, index), Math.random() * 100 + 50); // Random typing speed
+                }
+            }
+
+            // Simulate the typing of random "hacking" commands
+            const hackingCommands = [
+                "Connecting to the server...",
+                "Bypassing firewall...",
+                "Accessing secure databases...",
+                "Scanning network for vulnerabilities...",
+                "Decrypting files...",
+                "Bypassing security protocols...",
+                "Injecting payload...",
+                "Compromising admin access..."
+            ];
+
+            let commandIndex = 0;
+            function runCommand() {
+                if (commandIndex < hackingCommands.length) {
+                    simulateTyping(hackingCommands[commandIndex], 0);
+                    commandIndex++;
+                    setTimeout(runCommand, Math.random() * 1000 + 1500); // Wait before next command
+                } else {
+                    // After all commands are executed, show random success/failure
+                    setTimeout(() => {
+                        const success = Math.random() > 0.6;
+                        if (success) {
+                            terminalOutput.innerText += "\n\nSuccess! Files have been accessed.";
+                        } else {
+                            terminalOutput.innerText += "\n\nFailure! Unable to bypass security.";
+                        }
+                    }, 1000);
+                }
+            }
+
+            runCommand();
+        });
+    </script>
+
+</body>
+</html>

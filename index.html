@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hacking Simulator</title>
+    <title>Fake Hacking Simulator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,9 +20,10 @@
             padding: 10px;
             width: 90%;
             margin: 20px auto;
-            height: 200px;
+            height: 400px;
             border: 1px solid #00ff00;
             overflow-y: auto;
+            white-space: pre-wrap;
         }
 
         input[type="text"] {
@@ -56,7 +57,7 @@
 <body>
 
     <h1>Fake Hacking Simulator</h1>
-    <p>Type random words to simulate the hacking process!</p>
+    <p>Type random words to simulate a hacking process with long code lines!</p>
 
     <div class="terminal" id="terminal">
         <p id="terminalOutput">Initializing hack...</p>
@@ -67,34 +68,47 @@
     <script>
         let terminalOutput = document.getElementById("terminalOutput");
         let userInput = document.getElementById("userInput");
-        let charCount = 0;
-        const maxChars = 100;
+        let wordCount = 0;
+        const maxWords = 200; // Increased to 200 words
 
-        // Function to simulate hacking output
-        function simulateHackingCode(inputChar) {
-            const hackLine = `Hacking code: ${inputChar}`;
-            terminalOutput.innerText += `\n${hackLine}`;
-            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to the bottom of the terminal
+        const hackingCodeLines = [
+            "Connecting to target system... \nScanning open ports... \nFirewall detected... \nLaunching brute force attack... \nDecrypting security tokens...",
+            "Bypassing network firewall... \nInjecting malicious script... \nDecrypting 256-bit AES encryption... \nAccessing secured database... \nExtracting user credentials...",
+            "Activating root access... \nOverriding security logs... \nDeploying backdoor connection... \nModifying system registry files... \nCompiling malicious payload...",
+            "Connecting to game server... \nSpoofing user session... \nInjecting administrator commands... \nAccessing premium features... \nUnlocking hidden game files...",
+            "Reversing security protocols... \nGenerating fake authentication tokens... \nEncrypting data streams... \nSimulating high-level penetration test...",
+            "Establishing secure connection... \nAccess granted... \nInjecting exploit... \nCompromising firewall defenses... \nRetrieving sensitive information...",
+            "Executing Python exploit... \nInitializing SQL injection... \nDumping server database contents... \nCloning repository files... \nGaining unauthorized access...",
+            "Bypassing two-factor authentication... \nDecrypting session cookies... \nModifying system time logs... \nInjecting remote access trojan...",
+            "Compiling exploit module... \nAccessing hidden directories... \nBypassing admin verification... \nInjecting SSH key for remote access...",
+            "Running custom script... \nGenerating fake user IDs... \nExploiting system vulnerabilities... \nSimulating cyber attack on target machine...",
+            "Accessing deep web network... \nDeploying network sniffer... \nExtracting encrypted messages... \nDecrypting secret communications...",
+            "Simulating server overload attack... \nGenerating fake security credentials... \nModifying access privileges... \nExecuting remote shutdown command..."
+        ];
+
+        // Function to simulate hacking process
+        function simulateHackingCode() {
+            const randomCode = hackingCodeLines[Math.floor(Math.random() * hackingCodeLines.length)];
+            terminalOutput.innerText += `\n${randomCode}`;
+            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom
         }
 
         // Function to randomly show success or failure after enough typing
         function showResult() {
-            if (charCount >= maxChars) {
-                const result = Math.random() > 0.5 ? "Success! Hack completed." : "Failure! Hack failed.";
+            if (wordCount >= maxWords) {
+                const result = Math.random() > 0.5 ? "Success! Hack completed successfully." : "Failure! Hack failed. Try again.";
                 terminalOutput.innerText += `\n\n${result}`;
-                userInput.disabled = true; // Disable the input field after 100 characters
+                userInput.disabled = true; // Disable input after 200 words
             }
         }
 
         // Event listener for input
         userInput.addEventListener("input", function() {
             const typedText = userInput.value;
-            const lastChar = typedText.slice(-1);
-
-            // Only simulate the typing if it's a non-empty character
-            if (lastChar && charCount < maxChars) {
-                simulateHackingCode(lastChar); // Simulate typing the character in the terminal
-                charCount++;
+            if (typedText.endsWith(" ")) {
+                wordCount++; // Count words
+                simulateHackingCode();
+                userInput.value = ""; // Clear input so words are not visible
                 showResult();
             }
         });
@@ -104,13 +118,12 @@
         startButton.innerText = "Start Typing";
         startButton.addEventListener("click", function() {
             terminalOutput.innerText = "Initializing hack...\nReady to start typing...";
-            userInput.disabled = false; // Enable the input field
-            userInput.focus(); // Focus on the input field for easier typing
+            userInput.disabled = false;
+            userInput.focus();
         });
         document.body.appendChild(startButton);
 
     </script>
 
 </body>
-    </html>
-    
+</html>

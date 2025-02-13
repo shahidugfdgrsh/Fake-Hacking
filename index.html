@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Internet Hacking Simulator</title>
+    <title>Fake Hacking Simulator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,73 +41,64 @@
         h1 {
             color: lime;
         }
-
-        .hidden {
-            display: none;
-        }
     </style>
 </head>
 <body>
 
-    <h1>Fake Internet Hacking Simulator</h1>
-    <p>Press the button to simulate a hacking attempt!</p>
+    <h1>Fake Hacking Simulator</h1>
+    <p>Start typing to simulate the hacking process!</p>
 
-    <button id="hackButton">Start Hacking</button>
-
-    <div class="terminal hidden" id="terminal">
+    <div class="terminal" id="terminal">
         <p id="terminalOutput">Initializing hack...</p>
     </div>
 
     <script>
-        document.getElementById("hackButton").addEventListener("click", function() {
-            // Show terminal and start typing simulation
-            let terminal = document.getElementById("terminal");
-            let terminalOutput = document.getElementById("terminalOutput");
-            terminal.classList.remove("hidden");
-            terminalOutput.innerText = "";
+        let terminalOutput = document.getElementById("terminalOutput");
+        let typing = false;
+        let charCount = 0;
+        const maxChars = 100;
 
-            // Function to simulate typing
-            function simulateTyping(text, index) {
-                if (index < text.length) {
-                    terminalOutput.innerText += text.charAt(index);
-                    index++;
-                    setTimeout(() => simulateTyping(text, index), Math.random() * 100 + 50); // Random typing speed
-                }
+        // Function to simulate hacking output
+        function simulateHackingCode(inputChar) {
+            const hackLine = `Hacking code: ${inputChar}`;
+            terminalOutput.innerText += `\n${hackLine}`;
+            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to the bottom of the terminal
+        }
+
+        // Function to randomly show success or failure after enough typing
+        function showResult() {
+            if (charCount >= maxChars) {
+                const result = Math.random() > 0.5 ? "Success! Hack completed." : "Failure! Hack failed.";
+                terminalOutput.innerText += `\n\n${result}`;
             }
+        }
 
-            // Simulate the typing of random "hacking" commands
-            const hackingCommands = [
-                "Connecting to the server...",
-                "Bypassing firewall...",
-                "Accessing secure databases...",
-                "Scanning network for vulnerabilities...",
-                "Decrypting files...",
-                "Bypassing security protocols...",
-                "Injecting payload...",
-                "Compromising admin access..."
-            ];
+        // Event listener for keypress
+        document.addEventListener("keydown", function(event) {
+            if (typing && charCount < maxChars) {
+                const randomChar = event.key; // Capture the key pressed
 
-            let commandIndex = 0;
-            function runCommand() {
-                if (commandIndex < hackingCommands.length) {
-                    simulateTyping(hackingCommands[commandIndex], 0);
-                    commandIndex++;
-                    setTimeout(runCommand, Math.random() * 1000 + 1500); // Wait before next command
-                } else {
-                    // After all commands are executed, show random success/failure
-                    setTimeout(() => {
-                        const success = Math.random() > 0.6;
-                        if (success) {
-                            terminalOutput.innerText += "\n\nSuccess! Files have been accessed.";
-                        } else {
-                            terminalOutput.innerText += "\n\nFailure! Unable to bypass security.";
-                        }
-                    }, 1000);
+                if (randomChar !== "Shift" && randomChar !== "CapsLock" && randomChar !== "Enter") {
+                    charCount++;
+                    simulateHackingCode(randomChar); // Simulate typing the key in the terminal
                 }
+                showResult();
             }
-
-            runCommand();
         });
+
+        // Start the typing process when the user clicks the button
+        function startTyping() {
+            typing = true;
+            terminalOutput.innerText = "Initializing hack...\nReady to start typing...";
+            document.getElementById("terminal").style.border = "1px solid #00ff00";
+        }
+
+        // Add a start button for the user to begin typing
+        const startButton = document.createElement("button");
+        startButton.innerText = "Start Typing";
+        startButton.addEventListener("click", startTyping);
+        document.body.appendChild(startButton);
+
     </script>
 
 </body>
